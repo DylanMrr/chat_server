@@ -27,7 +27,9 @@ class DatabaseService:
         id_object = -1
         user_entry = self.__collection.find_one({"login": login})
         if user_entry is None:
-            id_object = self.__collection.insert_one({"login": login, "password": password}).inserted_id
+            id_object = self.__collection.insert_one(
+                {"login": login, "password": password,
+                 "contacts": [], "contacts_requests": [], "not_confirmed_contact": []}).inserted_id
             result = RegisterResults.success
         else:
             result = RegisterResults.login_busy
