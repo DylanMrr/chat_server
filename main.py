@@ -21,7 +21,7 @@ def main():
     online_users_service = OnlineUsersService()
     register_service = RegisterService(client)
     login_service = LoginService(client, online_users_service)
-    social_service = SocialService(online_users_service)
+    social_service = SocialService(online_users_service, client)
 
     asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
     application = tornado.web.Application([

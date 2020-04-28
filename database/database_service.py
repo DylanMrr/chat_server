@@ -1,4 +1,5 @@
 from pymongo import MongoClient
+from bson.objectid import ObjectId
 from common_types.enumerations import RegisterResults
 from common_types.enumerations import LoginResults
 
@@ -34,3 +35,10 @@ class DatabaseService:
         else:
             result = RegisterResults.login_busy
         return result, str(id_object)
+
+    def add_not_confirmed_contact(self, self_id, request_id):
+        # todo возможно косяк, из-за несоответствия типов id. Если так, то руками в бд добавлять id
+        self.__collection.update({"_id": ObjectId(self_id)}, {"$push": {"not_confirmed_contact": request_id}})
+
+    def add_contact_request(self, self_id, request_id):
+        self.__collection.update({"_id": ObjectId(request_id)}, {"$push": {"contacts_requests": self_id}})
