@@ -42,3 +42,12 @@ class DatabaseService:
 
     def add_contact_request(self, self_id, request_id):
         self.__collection.update({"_id": ObjectId(request_id)}, {"$push": {"contacts_requests": self_id}})
+
+    def get_contacts(self, self_id):
+        return self.__collection.find_one(({"_id": ObjectId(self_id)}))["contacts"]
+
+    def get_requested_contacts(self, self_id):
+        return self.__collection.find_one(({"_id": ObjectId(self_id)}))["contacts_requests"]
+
+    def get_not_confirmed_contact(self, self_id):
+        return self.__collection.find_one(({"_id": ObjectId(self_id)}))["not_confirmed_contact"]

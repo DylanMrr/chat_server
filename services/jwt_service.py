@@ -6,7 +6,7 @@ JWT_SECRET = "jwt_secret_code"
 JWT_ALGORITHM = "HS256"
 JWT_EXP_DELTA_SECONDS = 86400
 
-
+#todo проверять здесь на длеительность жизни. Если что выбрасывать пользователя
 def create_jwt(id):
     payload = {
         "user_id": id,

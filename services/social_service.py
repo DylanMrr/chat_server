@@ -14,3 +14,12 @@ class SocialService:
         self._database_service.add_not_confirmed_contact(self_id, request_id) # Добавляем в неподтвержденные
         self._database_service.add_contact_request(self_id, request_id) #Добавляем в запрос
 
+    def get_all_contact(self, jwt: str):
+        self_id = self._online_users_service.get_user_id(jwt)
+        if self_id == -1:
+            print("There is no id")
+        contacts = self._database_service.get_contacts(self_id)
+        requested_contacts = self._database_service.get_requested_contacts(self_id)
+        not_confirmed_contacts = self._database_service.get_not_confirmed_contact(self_id)
+        return contacts, requested_contacts, not_confirmed_contacts
+

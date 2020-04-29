@@ -7,6 +7,7 @@ import tornado.ioloop
 from handlers.login_handler import LoginHandler
 from handlers.register_handler import RegisterHandler
 from handlers.add_contact_handler import AddContactHandler
+from handlers.get_all_contacts_handler import GetAllContactsHandler
 
 from database.database_service import DatabaseService
 
@@ -27,7 +28,8 @@ def main():
     application = tornado.web.Application([
         (r"/login", LoginHandler, dict(login_service=login_service)),
         (r"/register", RegisterHandler, dict(register_service=register_service)),
-        (r"/add_contact", AddContactHandler, dict(social_service=social_service))
+        (r"/add_contact", AddContactHandler, dict(social_service=social_service)),
+        (r"/get_all_contacts", GetAllContactsHandler, dict(social_service=social_service))
     ])
     http_server = tornado.httpserver.HTTPServer(application)
     http_server.listen(8888)

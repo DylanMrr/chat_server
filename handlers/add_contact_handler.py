@@ -15,9 +15,9 @@ class AddContactHandler(tornado.web.RequestHandler):
     def post(self):
         message = AddContactMessage.deserialize(self.request.body.decode('utf-8'))
         #todo проверить jwt
-        self_id = self._social_service(message.jwt)
-        result = self._social_service.add_contact(self_id, message.request_id)
+        self_id = self._social_service.get_user_id(self.request.headers['jwt'])
+        self._social_service.add_contact(self_id, message.request_id)
         self.set_header("Content-Type", "application/json")
-        self.write(result)
+        self.write({"result": "success"})
         self.finish()
 
