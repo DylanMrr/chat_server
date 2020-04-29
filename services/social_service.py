@@ -23,3 +23,6 @@ class SocialService:
         not_confirmed_contacts = self._database_service.get_not_confirmed_contact(self_id)
         return contacts, requested_contacts, not_confirmed_contacts
 
+    def confirm_contact(self, self_id, requested_id, answer):
+        self._database_service.confirm_contact(self_id, requested_id, answer)
+

@@ -4,6 +4,7 @@ from common_types.enumerations import RegisterResults
 from common_types.enumerations import LoginResults
 
 
+#todo разнести это по классам
 class DatabaseService:
     def __init__(self):
         self.__mongo_client = MongoClient("localhost", 27017)
@@ -36,10 +37,12 @@ class DatabaseService:
             result = RegisterResults.login_busy
         return result, str(id_object)
 
+    # У пользователя, который послал заявку
     def add_not_confirmed_contact(self, self_id, request_id):
         # todo возможно косяк, из-за несоответствия типов id. Если так, то руками в бд добавлять id
         self.__collection.update({"_id": ObjectId(self_id)}, {"$push": {"not_confirmed_contact": request_id}})
 
+    # У пользователя, которому послали заявку
     def add_contact_request(self, self_id, request_id):
         self.__collection.update({"_id": ObjectId(request_id)}, {"$push": {"contacts_requests": self_id}})
 
@@ -51,3 +54,14 @@ class DatabaseService:
 
     def get_not_confirmed_contact(self, self_id):
         return self.__collection.find_one(({"_id": ObjectId(self_id)}))["not_confirmed_contact"]
+
+    # Вызывается для пользователя, которому послали заявку
+    def confirm_contact(self, self_id, requested_id, answer):
+        # Удалили из полученных заявок
+        self.__collection.update({"_id": ObjectId(self_id)}, {"$pull": {"contacts_requests": str(requested_id)}})
+        # Удалили из отправленных заявок
+        self.__collection.update({"_id": ObjectId(requested_id)}, {"$pull": {"not_confirmed_contact": str(self_id)}})
+        if answer == 1:
+            # добавить друг друга в контакты
+            self.__collection.update({"_id": ObjectId(self_id)}, {"$push": {"contacts": requested_id}})
+            self.__collection.update({"_id": ObjectId(requested_id)}, {"$push": {"contacts": self_id}})
