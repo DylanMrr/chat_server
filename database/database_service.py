@@ -65,3 +65,6 @@ class DatabaseService:
             # добавить друг друга в контакты
             self.__collection.update({"_id": ObjectId(self_id)}, {"$push": {"contacts": requested_id}})
             self.__collection.update({"_id": ObjectId(requested_id)}, {"$push": {"contacts": self_id}})
+
+    def get_unsended_messages(self, self_id):
+        return self.__collection.find_one(({"_id": ObjectId(self_id)}))["unsended_messages"]

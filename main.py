@@ -23,7 +23,7 @@ from services.websocket_service import WebSocketService
 def main():
     client = DatabaseService()
     online_users_service = OnlineUsersService()
-    websocket_service = WebSocketService(online_users_service)
+    websocket_service = WebSocketService(online_users_service, client)
     register_service = RegisterService(client)
     login_service = LoginService(client, online_users_service)
     social_service = SocialService(online_users_service, client)
