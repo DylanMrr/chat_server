@@ -23,7 +23,6 @@ class DatabaseService:
             id_object = user_entry["_id"]
         return result, str(id_object)
 
-
     def register(self, login: str, password: str):
         result = RegisterResults.default
         id_object = -1
@@ -31,7 +30,8 @@ class DatabaseService:
         if user_entry is None:
             id_object = self.__collection.insert_one(
                 {"login": login, "password": password,
-                 "contacts": [], "contacts_requests": [], "not_confirmed_contact": []}).inserted_id
+                 "contacts": [], "contacts_requests": [], "not_confirmed_contact": [],
+                 "unsended_messages": {}}).inserted_id
             result = RegisterResults.success
         else:
             result = RegisterResults.login_busy
