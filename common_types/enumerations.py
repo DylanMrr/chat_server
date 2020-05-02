@@ -15,3 +15,7 @@ class LoginResults(Enum):
     not_validated = 3,
     server_error = 4,
     default = 5
+
+
+class WebSocketMessageTypes(Enum):
+    init = 1
