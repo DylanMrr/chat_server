@@ -1,3 +1,6 @@
+import tornado.websocket
+
+
 class OnlineUserData:
     def __init__(self, id: str):
         self.id = id
@@ -18,5 +21,17 @@ class OnlineUsersService:
     def delete_user_online(self):
         pass
 
-    def init_user(self, jwt, socket):
+    def init_user(self, jwt: str, socket: tornado.websocket.WebSocketHandler):
         self.__users_online[jwt].socket = socket
+
+    def is_user_online(self, id):
+        for v in self.__users_online.values():
+            if v.id == id:
+                return True
+        return False
+
+    def get_socket(self, id) -> tornado.websocket.WebSocketHandler:
+        for v in self.__users_online:
+            if self.__users_online[v].id == id:
+                return self.__users_online[v].socket
+        return None

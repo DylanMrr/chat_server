@@ -68,3 +68,9 @@ class DatabaseService:
 
     def get_unsended_messages(self, self_id):
         return self.__collection.find_one(({"_id": ObjectId(self_id)}))["unsended_messages"]
+
+    def add_unsended_message(self, receiver_id, sender_id, message):
+        self.__collection.update({"_id": ObjectId(receiver_id)}, {"$push": {"unsended_messages.{}".format(sender_id): message}})
+
+    def delete_unsended_messages(self, self_id):
+        self.__collection.update({"_id": ObjectId(self_id)}, {"$set": {"unsended_messages": {}}})
